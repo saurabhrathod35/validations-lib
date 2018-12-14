@@ -17,7 +17,7 @@ var object = {
 ```
 Your output will be 
 ```
-{'result':true,message:'number 1 must be greater than 25'}
+{'result':false,message:'number 1 must be greater than 25'}
 ```
 
 
