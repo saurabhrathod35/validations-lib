@@ -1,0 +1,30 @@
+{
+  "name": "validations-lib",
+  "version": "1.0.2",
+  "description": "All types validation",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "node index.js",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [],
+  "author": "Maddy",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.2.2",
+    "@types/moment-timezone": "^0.5.9"
+  },
+  "dependencies": {
+    "moment-timezone": "^0.5.23"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
