@@ -13,7 +13,7 @@ var validationsLib=required('validations-lib');
 import {Validation} from 'validations-lib'
 ```
 required object 
-```
+```ruby
 var object = {
      title: 'number 1',
      type: 'text',
@@ -25,20 +25,20 @@ var object = {
 }
 ```
 
->pass your object into this **validations-lib**
-```
-# javascript 
+>pass your object into this **validations-lib** 
+#### javascript 
+```ruby
+
 var result= validationsLib.Validation.validate(object)
 
 ```
-
-```
-# typescript or node 8+
+#### typescript node 8+
+```ruby 
 var result= Validation.validate(object)
 ```
 
 Your output will be 
-```
+```ruby
 {'result':false,message:'number 1 must be greater than 25'}
 ```
 
@@ -57,7 +57,7 @@ Your output will be
 
 
 ### Title
->your field or validation Title
+_your field or validation Title   
 
 ### Type(s)
 
@@ -110,7 +110,7 @@ Here First perameter is bydefault minimun if you pass two perameter then it cons
 
 in case of between your object like under
 
-```
+```ruby
 var object ={
      title: 'number 1',
      type: 'text',
@@ -126,7 +126,7 @@ var object ={
 _if you hase bunch of field for validation in singal object then have to give **uid** in question and entry object_
 
 ## Example
-```
+```ruby
 var object = [
   {
        title: 'number 1',
@@ -163,7 +163,7 @@ var object = [
 ]  
 ```
 And Your Final input object like under
-```
+```ruby
 var entry = {
 '#1':1,
 '#2':2,
@@ -172,12 +172,12 @@ var entry = {
 }
 ```
 
-```
+```ruby
 var result = validationsLib.validateWithGroup(entry,object)
 ```
 
 ## Output 
-```
+```ruby
 {
 '#1':{'result':false,message:'number 1 must be between than 25 to 30'},
 '#2':{'result':false,message:'number 1 must be between than 25 to 30'},
@@ -188,7 +188,7 @@ var result = validationsLib.validateWithGroup(entry,object)
 ## Compaire with anther question 
 > if you want to compaire your question with anther question then spacify **uid** in params,
 then your object like this
-```
+```ruby
  {
        title: 'number 4',
        type: 'text',
@@ -201,7 +201,7 @@ then your object like this
   ```
 ### output
 
-```
+```ruby
 {
 '#1':{'result':false,message:'number 1 must be between than 25 to 30'},
 '#2':{'result':false,message:'number 1 must be between than 25 to 30'},
