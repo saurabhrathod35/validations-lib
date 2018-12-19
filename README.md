@@ -211,6 +211,7 @@ then your object like this
 
 ```
 ### for other requirements  
-_feelfree mail on saurabhratohd35@gmail.com_
+_feelfree mail me on saurabhratohd35@gmail.com_
 
 ### github URL
+https://github.com/saurabhrathod35/validations-lib
