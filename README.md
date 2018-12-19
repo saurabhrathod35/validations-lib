@@ -9,7 +9,6 @@ _this lib contains all type of validation in node and angular 6_
 var validationsLib=required('validations-lib');
 ```
 ### Angular app
-
 ```
 import {Validation} from 'validations-lib'
 ```
@@ -28,7 +27,14 @@ var object = {
 
 >pass your object into this **validations-lib**
 ```
-var result= validationsLib.validate(object)
+# javascript 
+var result= validationsLib.Validation.validate(object)
+
+```
+
+```
+# typescript or node 8+
+var result= Validation.validate(object)
 ```
 
 Your output will be 
