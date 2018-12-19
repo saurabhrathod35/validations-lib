@@ -1,6 +1,6 @@
 {
   "name": "validations-lib",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "All types validation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

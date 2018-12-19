@@ -29,6 +29,7 @@ export class Validation {
     let validations = {};
     (questions || []).forEach(question => { 
       validations[question.uid] = Validation.validate(ValidationUtils.makeSimpleQuestion(question, entrys));
+      validations[question.uid].result=!validations[question.uid].result
     });
     return validations;
   }

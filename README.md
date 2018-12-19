@@ -3,7 +3,7 @@ _this lib contains all type of validation in node and angular 6_
 
 ## How to use
 
-### Javascript_
+### Javascript
 
 ```
 var validationsLib=required('validations-lib');
@@ -13,7 +13,6 @@ var validationsLib=required('validations-lib');
 ```
 import {Validation} from 'validations-lib'
 ```
-
 required object 
 ```
 var object = {
@@ -32,9 +31,6 @@ var object = {
 var result= validationsLib.validate(object)
 ```
 
-```
-
-```
 Your output will be 
 ```
 {'result':false,message:'number 1 must be greater than 25'}
@@ -81,7 +77,7 @@ Your output will be
 | lte                    | less then equal to                                                       | all types
 | gte                    | grater then equal to                                                     | all types
 | notEqual               | not equal to                                                             | all types
-| between                | bettween                                                                 | all types except(ranges)
+| between                | between                                                                 | all types except(ranges)
 | notBetween             | notBetween                                                               | all types except(ranges)
 | sameAs                 | this condition only for text (asset match)                               | text
 | notSame                | this condition only for text (asset not match)                           | text
@@ -100,7 +96,7 @@ base of **validations-lib** here you can pass maximumm 2 perameters
 | Types                  | Details                                                                  |     
 | ---------------------- | -------------------------------------------------------------------------|
 | min                    | minimun element                                                          |
-| max                    | max eliment                                                              |
+| max                    | max element                                                              |
 
 ### Example
 
@@ -160,9 +156,7 @@ var object = [
   }
 ]  
 ```
-
 And Your Final input object like under
-
 ```
 var entry = {
 '#1':1,
@@ -174,7 +168,6 @@ var entry = {
 
 ```
 var result = validationsLib.validateWithGroup(entry,object)
-
 ```
 
 ## Output 
@@ -186,7 +179,7 @@ var result = validationsLib.validateWithGroup(entry,object)
 '#4':{'result':false,message:'number 1 must be between than 25 to 30'}
 }
 ```
-## Compaire with anther question +1
+## Compaire with anther question 
 > if you want to compaire your question with anther question then spacify **uid** in params,
 then your object like this
 ```
