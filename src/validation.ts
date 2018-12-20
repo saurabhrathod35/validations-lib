@@ -18,19 +18,25 @@ export class Validation {
       if (params && question.condition) {
         const validationInstance = Validation.getInstance(question);
         return validationInstance[question.condition](question.currentValue, question.params);
+      }else {
+        return {result:false,message:''}
       }
     }
   }
-
-
+ 
   static validateWithGroup(entrys: Object, schema: Object) {
     let questions = ValidationUtils.getFieldsByType(schema)
 
     let validations = {};
     (questions || []).forEach(question => { 
-      validations[question.uid] = Validation.validate(ValidationUtils.makeSimpleQuestion(question, entrys));
-      validations[question.uid].result=!validations[question.uid].result
+      if(entrys[question.uid]){
+        validations[question.uid] = Validation.validate(ValidationUtils.makeSimpleQuestion(question, entrys)) ;
+        validations[question.uid].result=!validations[question.uid].result
+      }else{
+        validations[question.uid]={result:true,message:''}
+      }
     });
+    validations['result']=(<any>Object).values(validations).every(question=>question.result)
     return validations;
   }
 

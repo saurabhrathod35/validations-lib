@@ -57,7 +57,7 @@ Your output will be
 
 
 ### Title
-_your field or validation Title   
+_ your field or validation Title _
 
 ### Type(s)
 
@@ -180,9 +180,9 @@ var result = validationsLib.validateWithGroup(entry,object)
 ```ruby
 {
 '#1':{'result':false,message:'number 1 must be between than 25 to 30'},
-'#2':{'result':false,message:'number 1 must be between than 25 to 30'},
-'#3':{'result':false,message:'number 1 must be between than 20 to 30'},
-'#4':{'result':false,message:'number 1 must be between than 25 to 30'}
+'#2':{'result':false,message:'number 2 must be between than 25 to 30'},
+'#3':{'result':false,message:'number 3 must be between than 20 to 30'},
+'#4':{'result':false,message:'number 4 must be between than 25 to 30'}
 }
 ```
 ## Compaire with anther question 
@@ -200,13 +200,14 @@ then your object like this
   
   ```
 ### output
-
+**result** key all field is valid or not
 ```ruby
 {
 '#1':{'result':false,message:'number 1 must be between than 25 to 30'},
-'#2':{'result':false,message:'number 1 must be between than 25 to 30'},
-'#3':{'result':false,message:'number 1 must be between than 20 to 30'},
-'#4':{'result':false,message:'number 1 must be between than 25 to 40'}
+'#2':{'result':false,message:'number 2 must be between than 25 to 30'},
+'#3':{'result':false,message:'number 3 must be between than 20 to 30'},
+'#4':{'result':false,message:'number 4 must be between than 25 to 40'}
+'result':false
 }
 
 ```
