@@ -15,7 +15,7 @@
     "postversion": "git push && git push --tags"
   },
   "keywords": [],
-  "author": "Maddy",
+  "author": "Saurabh Rathod",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^3.2.2",
