@@ -15,11 +15,14 @@ export class Validation {
   static validate(question: FieldValidation) {
     if (question) {
       let params = ValidationUtils.hasEmptyValue(question.params);
+      if(question.required && question.currentValue==null || ''){
+        return ValidationUtils.isRequired(question)
+      }
       if (params && question.condition) {
         const validationInstance = Validation.getInstance(question);
         return validationInstance[question.condition](question.currentValue, question.params);
       }else {
-        return {result:false,message:''}
+        return {result:true,message:''}
       }
     }
   }
@@ -31,7 +34,6 @@ export class Validation {
     (questions || []).forEach(question => { 
       if(entrys[question.uid]){
         validations[question.uid] = Validation.validate(ValidationUtils.makeSimpleQuestion(question, entrys)) ;
-        validations[question.uid].result=!validations[question.uid].result
       }else{
         validations[question.uid]={result:true,message:''}
       }

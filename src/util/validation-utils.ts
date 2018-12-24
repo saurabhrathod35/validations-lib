@@ -47,7 +47,9 @@ export class ValidationUtils {
     });
   }
 
-
+ static isRequired(question){
+   return {result:false,message:(question.title || '') + ' is Required'}
+ }
   static getFieldsByType(arrayOrObject) {
     const questions = [];
     if (!arrayOrObject) {
