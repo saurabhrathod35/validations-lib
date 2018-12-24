@@ -76,7 +76,7 @@ export class ValidationUtils {
         question.validation.condition[type].value
       ) {
         let tempValue = question.validation.condition[type].value;
-        let value = (question.validation.condition[type].type === 'field') ? entry[question.uid] : tempValue;
+        let value = (question.validation.condition[type].type === 'field') ? entry[tempValue] : tempValue;
 
         questionConfig.setParams(value)
       }
