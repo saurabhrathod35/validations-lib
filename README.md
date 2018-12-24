@@ -17,6 +17,7 @@ required object
 var object = {
      title: 'number 1',
      type: 'text',
+     required:true,
      condition: 'gt',
      currentValue: '1',
      message: 'number 1 must be greater than 25 ',
@@ -53,7 +54,9 @@ Your output will be
 | currentValue  | input (Field input)                 |
 | message       | customise your message              |
 | params        | compaire values                     |
+| required      | required field                      |
 | uid           | unique identity(optional)           |
+
 
 
 ### Title
@@ -104,6 +107,12 @@ base of **validations-lib** here you can pass maximumm 2 perameters
 | min                    | minimun element                                                          |
 | max                    | max element                                                              |
 
+### Required
+if you pass bool in this object then it will give you appropriate message with uid
+
+### uid (Unique ID)
+this property contains unique identification of object 
+
 ### Example
 
 Here First perameter is bydefault minimun if you pass two perameter then it consider (between,notbetween case)
@@ -114,6 +123,7 @@ in case of between your object like under
 var object ={
      title: 'number 1',
      type: 'text',
+     required:true,
      condition: 'between',
      currentValue: '1',
      message: 'number 1 must be between than 25 to 30',
@@ -131,6 +141,7 @@ var object = [
   {
        title: 'number 1',
        type: 'text',
+       required:true,
        condition: 'between',
         message: 'number 1 must be between than 25 to 30',
        params: [25,30],
@@ -139,14 +150,16 @@ var object = [
   {
        title: 'number 2',
        type: 'text',
+       required:true,
        condition: 'between',
-        message: 'number 2 must be between than 25 to 30',
+       message: 'number 2 must be between than 25 to 30',
        params: [25,30],
        uid:'#2'
   },
   {
        title: 'number 3',
        type: 'text',
+       required:true,
        condition: 'between',
         message: 'number 3 must be between than 20 to 30',
        params: [20,30],
@@ -155,6 +168,7 @@ var object = [
   {
        title: 'number 4',
        type: 'text',
+       required:true,
        condition: 'between',
         message: 'number 4 must be between than 25 to 30',
        params: [25,30],
@@ -192,6 +206,7 @@ then your object like this
  {
        title: 'number 4',
        type: 'text',
+       required:true,
        condition: 'between',
         message: 'number 4 must be between than 25 to #3 value',
        params: [25,'#3'],
