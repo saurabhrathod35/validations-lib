@@ -5,12 +5,12 @@ _this lib contains all type of validation in node and angular 6_
 
 ### Javascript
 
-```
+```ruby
 var validationsLib=required('validations-lib');
 ```
 ### Angular app
-```
-import {Validation} from 'validations-lib'
+```ruby
+import {Validation,FieldValidation} from 'validations-lib'
 ```
 required object 
 ```ruby
@@ -30,7 +30,7 @@ var object = {
 #### javascript 
 ```ruby
 
-var result= validationsLib.Validation.validate(object)
+var result= validationsLib.Validation.validate(new FieldValidation(object))
 
 ```
 #### typescript node 8+
@@ -106,6 +106,7 @@ base of **validations-lib** here you can pass maximumm 2 perameters
 | ---------------------- | -------------------------------------------------------------------------|
 | min                    | minimun element                                                          |
 | max                    | max element                                                              |
+if you want to set min maxone by one then you can use **setParams()** method with onw arg
 
 ### Required
 if you pass bool in this object then it will give you appropriate message with uid
