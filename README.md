@@ -46,16 +46,16 @@ Your output will be
 
 ### Describe base object
 
-| Property      | Details                             |
-| ------------- | ------------------------------------|
-| title         | Validation(field) Title(string)     |
-| type          | Field Type(which type of question)  |
-| condition     | conditon type like greter than      |
-| currentValue  | input (Field input)                 |
-| message       | customise your message              |
-| params        | compaire values                     |
-| required      | required field                      |
-| uid           | unique identity(optional)           |
+| Property      | Details                             | Default |
+| ------------- | ------------------------------------|---------|
+| title         | Validation(field) Title(string)     |blank    |
+| type          | Field Type(which type of question)  |text     | 
+| condition     | conditon type like greter than      |blank    | 
+| currentValue  | input (Field input)                 |blank    |
+| message       | customise your message              |lib genrated|
+| params        | compaire values                     |blank|
+| required      | required field                      |false|
+| uid           | unique identity(optional)           |blank|
 
 
 
@@ -108,8 +108,8 @@ base of **validations-lib** here you can pass maximumm 2 perameters
 | max                    | max element                                                              |
 if you want to set min maxone by one then you can use **setParams()** method with onw arg
 
-### Required
-if you pass bool in this object then it will give you appropriate message with uid
+### Required (optional)
+if you pass bool in this object then it will give you appropriate message with uid otherwise default false
 
 ### uid (Unique ID)
 this property contains unique identification of object 
