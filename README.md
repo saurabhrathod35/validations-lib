@@ -30,12 +30,12 @@ var object = {
 #### javascript 
 ```ruby
 
-var result= validationsLib.Validation.validate(new FieldValidation(object))
+var result= validationsLib.Validation.validate(object)
 
 ```
 #### typescript node 8+
 ```ruby 
-var result= Validation.validate(object)
+var result= Validation.validate(new FieldValidation(object))
 ```
 
 Your output will be 
