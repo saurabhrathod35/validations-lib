@@ -32,8 +32,13 @@ export class Validation {
 
     let validations = {};
     (questions || []).forEach(question => { 
-      if(entrys[question.uid]){
-        validations[question.uid] = Validation.validate(ValidationUtils.makeSimpleQuestion(question, entrys)) ;
+      let singalQuestion = ValidationUtils.makeSimpleQuestion(question, entrys);
+      if (singalQuestion.required && singalQuestion.currentValue == '') {
+        validations[question.uid]= ValidationUtils.isRequired(singalQuestion);
+      }
+
+     else if(entrys[question.uid]){
+        validations[question.uid] = Validation.validate(singalQuestion) ;
       }else{
         validations[question.uid]={result:true,message:''}
       }
