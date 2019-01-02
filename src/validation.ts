@@ -27,23 +27,29 @@ export class Validation {
     }
   }
  
-  static validateWithGroup(entrys: Object, schema: Object) {
+  static validateWithGroup(entrys: Object, schema: Object, touchedFields?: object) {
     let questions = ValidationUtils.getFieldsByType(schema)
-
+    if(!touchedFields){
+      touchedFields={}
+    } 
+    
     let validations = {};
-    (questions || []).forEach(question => { 
+    (questions || []).forEach(question => {
+      touchedFields[question.uid] =( touchedFields && touchedFields[question.uid]) ? touchedFields[question.uid] : true
+      
       let singalQuestion = ValidationUtils.makeSimpleQuestion(question, entrys);
       if (singalQuestion.required && singalQuestion.currentValue == '') {
         validations[question.uid]= ValidationUtils.isRequired(singalQuestion);
       }
 
-     else if(entrys[question.uid]){
-        validations[question.uid] = Validation.validate(singalQuestion) ;
-      }else{
-        validations[question.uid]={result:true,message:''}
+      else if (entrys[question.uid] && touchedFields[question.uid]) {
+        validations[question.uid] = Validation.validate(singalQuestion);
       }
+      else {
+        validations[question.uid] = { result: true, message: '' }
+      } 
     });
-    validations['result']=(<any>Object).values(validations).every(question=>question.result)
+    validations['result'] = (<any>Object).values(validations).every(question => question.result)
     return validations;
   }
 
