@@ -107,19 +107,19 @@ Based on the **validations-lib** here you can pass maximumm 2 parameters as ment
 | min                    | Minimun number of elements                                               |
 | max                    | Maximum number of elements                                               |
 
-If one wants to set min value and max value one by one (one after the other) then one can use **setParams()** method with one argument
+If one wants to set min value and max value one by one (one after the other) then one can use **setParams()** method with one argument.
 
 ### Required (optional)
-If you pass a boolean value in this object then it will give you appropriate message accordingly with uid otherwise by default it will return false
+If you pass a boolean value in this object then it will give you appropriate message accordingly with UID otherwise by default it will return false.
 
 ### uid (Unique ID)
 This property contains unique identification of an object. 
 
 ### Example
 
-Here first parameter is by default minimum. If you pass two parameters then it considers (between, notbetween case).
+If you pass two parameters then it considers is as 'between' or 'not between' case.
 
-In case of between your object will be something like as shown below:
+In case of 'between' your object will be something like as shown below:
 
 ```ruby
 var object ={
