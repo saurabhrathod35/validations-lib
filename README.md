@@ -1,7 +1,7 @@
 ## Validations-lib
-_this lib contains all type of validation in node and angular 6_
+_This library contains all types of validations required for Node and Angular 6_
 
-## How to use
+## How to use it:
 
 ### Javascript
 
@@ -26,7 +26,7 @@ var object = {
 }
 ```
 
->pass your object into this **validations-lib** 
+>Pass your object into this **validations-lib** 
 #### javascript 
 ```ruby
 
@@ -44,81 +44,82 @@ Your output will be
 ```
 
 
-### Describe base object
+### Description of the base object
 
 | Property      | Details                             | Default |
 | ------------- | ------------------------------------|---------|
 | title         | Validation(field) Title(string)     |blank    |
-| type          | Field Type(which type of question)  |text     | 
-| condition     | conditon type like greter than      |blank    | 
-| currentValue  | input (Field input)                 |blank    |
-| message       | customise your message              |lib genrated|
-| params        | compaire values                     |blank|
-| required      | required field                      |false|
-| uid           | unique identity(optional)           |blank|
+| type          | Field Type(type of question)        |text     | 
+| condition     | Conditons like greater than         |blank    | 
+| currentValue  | Input (Field input)                 |blank    |
+| message       | Customise your message              |lib generated|
+| params        | Compare the values                  |blank|
+| required      | Required fields                     |false|
+| uid           | Unique identifier(numeric-optional) |blank|
 
 
 
 ### Title
-_ your field or validation Title _
+Your field or Validation Title
 
-### Type(s)
+### Input Type(s)
 
-| Types                  | Details                                                                  |     
-| ---------------------- | -------------------------------------------------------------------------|
-| text                   | default text type                                                        |
-| number                 | allows only numbers                                                      |
-| multiselect-dropdown   | allows singal dymantion arrray of elements                               |
-| date                   | date format (moment js)                                                  |
-| time                   | time format (moment js)                                                  |
-| datetime               | allow date with time                                                     |
-| timeRange              | allow array of time [time1,time2] or [[time1},{time2]]                   |
-| dateRange              | allow array of date [date1,date2] or [[date1,date2]]                     |
-| dateTimeRange          | allow array of date [datetime1,datetime2] or [[datetime1],[datetime2]]   |
+| Types                  | Details                                                                                |     
+| ---------------------- | ---------------------------------------------------------------------------------------|
+| text                   | By default it is text type                                                             |
+| number                 | Allows only number type                                                                |
+| multiselect-dropdown   | Allows only single dimensional arrray of elements                                      |
+| date                   | Date format (moment js)                                                                |
+| time                   | Time format (moment js)                                                                |
+| datetime               | Allow date with time                                                                   |
+| timeRange              | Allows an array of time [time1,time2] or [[time1},{time2]]                             |
+| dateRange              | Allows an array of date [date1,date2] or [[date1,date2]]                               |
+| dateTimeRange          | Allows an array of date with time [datetime1,datetime2] or [[datetime1],[datetime2]]   |
 
-### Condition(s)
+### Condition(s) applied on fields
 
 | Types                  | Details                                                                  | Support    
 | ---------------------- | -------------------------------------------------------------------------|----------
-| gt                     | greter then                                                              | all types
-| lt                     | less then                                                                | all types
-| eq                     | equal to                                                                 | all types
-| lte                    | less then equal to                                                       | all types
-| gte                    | grater then equal to                                                     | all types
-| notEqual               | not equal to                                                             | all types
-| between                | between                                                                 | all types except(ranges)
-| notBetween             | notBetween                                                               | all types except(ranges)
-| sameAs                 | this condition only for text (asset match)                               | text
-| notSame                | this condition only for text (asset not match)                           | text
-| contains               | text contains                                                            | text
-| notContains            | text not contains                                                        | text
-| startwith              | text start with                                                          | text
-| endswith               | text ends with                                                           | text
+| gt                     | Greater than                                                             | all types
+| lt                     | Less than                                                                | all types
+| eq                     | Equal to                                                                 | all types
+| lte                    | Less than or equal to                                                    | all types
+| gte                    | Greater than or equal to                                                 | all types
+| notEqual               | Not equal to                                                             | all types
+| between                | Between                                                                  | all types except(ranges)
+| notBetween             | Not Between                                                              | all types except(ranges)
+| sameAs                 | This condition is only for text type (String match)                      | text
+| notSame                | This condition is only for text type (String does not match)             | text
+| contains               | Text contains (String that contains specific string of character/s)      | text
+| notContains            | Text not contains (String that does not contain specific string of character/s)                                                       | text
+| startwith              | Text start with (String starting with a particular character/s)          | text
+| endswith               | Text ends with (String starting with a particular character/s)           | text
 
 
 ### Message
-it allow for customised your validation message otherwise **validations-lib** provide default message
+One can have their own customised validation messages otherwise **validations-lib** provides default messages as well.
 
 ### Params
-base of **validations-lib** here you can pass maximumm 2 perameters 
+Based on the **validations-lib** here you can pass maximumm 2 parameters as mentioned below 
 
 | Types                  | Details                                                                  |     
 | ---------------------- | -------------------------------------------------------------------------|
-| min                    | minimun element                                                          |
-| max                    | max element                                                              |
-if you want to set min maxone by one then you can use **setParams()** method with onw arg
+| min                    | Minimun number of elements                                               |
+| max                    | Maximum number of elements                                               |
+
+If one wants to set min value and max value one by one (one after the other) then one can use **setParams()** method with one argument
 
 ### Required (optional)
-if you pass bool in this object then it will give you appropriate message with uid otherwise default false
+If you pass a boolean value in this object then it will give you appropriate message accordingly with uid otherwise by default it will return false
 
 ### uid (Unique ID)
-this property contains unique identification of object 
+This property contains unique identification of an object. 
 
 ### Example
 
-Here First perameter is bydefault minimun if you pass two perameter then it consider (between,notbetween case)
+Here first parameter is by default minimum. If you pass two parameters then it considers (between, notbetween case).
 
-in case of between your object like under
+In case of between your object will be something like as shown below:
 
 ```ruby
 var object ={
@@ -133,8 +134,8 @@ var object ={
 }
 ```
 
-# Multiple Field validation
-_if you hase bunch of field for validation in singal object then have to give **uid** in question and entry object_
+# Multiple Field Validation
+_If you have a bunch of fields for validation in a single object, then we have to providee **uid** in question as well as entry object_
 
 ## Example
 ```ruby
@@ -177,7 +178,7 @@ var object = [
   }
 ]  
 ```
-And Your Final input object like under
+And your final input object will look something like below:
 ```ruby
 var entry = {
 '#1':1,
@@ -200,9 +201,9 @@ var result = validationsLib.validateWithGroup(entry,object)
 '#4':{'result':false,message:'number 4 must be between than 25 to 30'}
 }
 ```
-## Compaire with anther question 
-> if you want to compaire your question with anther question then spacify **uid** in params,
-then your object like this
+## Comparison with another question 
+> If you want to compare your question with another question then specify **uid** in params,
+then your object will look something like this
 ```ruby
  {
        title: 'number 4',
@@ -216,7 +217,7 @@ then your object like this
   
   ```
 ### output
-**result** key all field is valid or not
+**result** Key 'all' field is valid or not
 ```ruby
 {
 '#1':{'result':false,message:'number 1 must be between than 25 to 30'},
@@ -227,8 +228,8 @@ then your object like this
 }
 
 ```
-### for other requirements  
-_feelfree mail me on saurabhratohd35@gmail.com_
+### For any other requirements  
+_Feel free to mail me at saurabhrathod35@gmail.com_
 
 ### github URL
 https://github.com/saurabhrathod35/validations-lib
