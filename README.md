@@ -16,7 +16,7 @@ required object
 ```ruby
 var object = {
      title: 'number 1',
-     type: 'text',
+     type: 'number',
      required:true,
      condition: 'gt',
      currentValue: '1',
@@ -72,8 +72,8 @@ Your field or Validation Title
 | date                   | Date format (moment js)                                                                |
 | time                   | Time format (moment js)                                                                |
 | datetime               | Allow date with time                                                                   |
-| timeRange              | Allows an array of time [time1,time2] or [[time1},{time2]]                             |
-| dateRange              | Allows an array of date [date1,date2] or [[date1,date2]]                               |
+| timeRange              | Allows an array of time [time1,time2] or [[time1],[time2]]                             |
+| dateRange              | Allows an array of date [date1,date2] or [[date1],[date2]]                               |
 | dateTimeRange          | Allows an array of date with time [datetime1,datetime2] or [[datetime1],[datetime2]]   |
 
 ### Condition(s) applied on fields
@@ -207,7 +207,7 @@ then your object will look something like this
 ```ruby
  {
        title: 'number 4',
-       type: 'text',
+       type: 'number',
        required:true,
        condition: 'between',
         message: 'number 4 must be between than 25 to #3 value',

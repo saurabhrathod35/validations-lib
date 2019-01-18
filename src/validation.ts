@@ -10,9 +10,9 @@ import { NumberValidationService } from './services/number-validation';
 import { ValidationUtils } from './util/validation-utils';
 import { FieldValidation } from './model/field.model';
 
-export class Validation {
+export  class Validation {
 
-  static validate(question: FieldValidation) {
+  static validate(question: FieldValidation | any) {
     if (question) {
       let params = ValidationUtils.hasEmptyValue(question.params);
       if(question.required && question.currentValue==null || ''){

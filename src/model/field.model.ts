@@ -10,7 +10,7 @@ export class FieldValidation {
 
     constructor(question: any, group?: any) {
         this.title = question.title;
-        this.type = question.type.name || question.type;
+        this.type = question.type.name || question.type || 'text';
         this.condition = question.condition || ((question.validation || {}).condition || {}).type || '';
         this.currentValue = question.currentValue || group[question.uid] || group.controls[question.uid].value;
         this.params = question.params || [];
