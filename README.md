@@ -124,7 +124,7 @@ In case of 'between' your object will be something like as shown below:
 ```ruby
 var object ={
      title: 'number 1',
-     type: 'text',
+     type: 'number',
      required:true,
      condition: 'between',
      currentValue: '1',
