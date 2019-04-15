@@ -142,7 +142,7 @@ _If you have a bunch of fields for validation in a single object, then we have t
 var object = [
   {
        title: 'number 1',
-       type: 'text',
+       type: 'number',
        required:true,
        condition: 'between',
         message: 'number 1 must be between than 25 to 30',
@@ -151,7 +151,7 @@ var object = [
   },
   {
        title: 'number 2',
-       type: 'text',
+       type: 'number',
        required:true,
        condition: 'between',
        message: 'number 2 must be between than 25 to 30',
@@ -160,7 +160,7 @@ var object = [
   },
   {
        title: 'number 3',
-       type: 'text',
+       type: 'number',
        required:true,
        condition: 'between',
         message: 'number 3 must be between than 20 to 30',
@@ -169,7 +169,7 @@ var object = [
   },
   {
        title: 'number 4',
-       type: 'text',
+       type: 'number',
        required:true,
        condition: 'between',
         message: 'number 4 must be between than 25 to 30',
