@@ -5,14 +5,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "start": "node index.js",
     "build": "tsc",
     "test": "npm run build && node src/__tests__/regression.test.js",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
+    "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },
   "repository": {
