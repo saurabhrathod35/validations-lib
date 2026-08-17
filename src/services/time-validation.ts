@@ -1,4 +1,4 @@
-import * as moment from 'moment-timezone';
+import * as moment from 'moment';
 import { ValidationUtils } from '../util/validation-utils';
 import { FieldValidation } from '../model/field.model';
 

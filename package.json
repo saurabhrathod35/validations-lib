@@ -22,7 +22,7 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.23"
+    "moment": "^2.29.4"
   },
   "files": [
     "lib/**/*"
