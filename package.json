@@ -1,6 +1,6 @@
 {
   "name": "validations-lib",
-  "version": "1.0.10.11",
+  "version": "2.0.0",
   "description": "All types validation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,8 +12,8 @@
     "postversion": "git push && git push --tags"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/saurabhrathod35/validations-lib"
+    "type": "git",
+    "url": "https://github.com/saurabhrathod35/validations-lib"
   },
   "keywords": [],
   "author": "Saurabh Rathod",
