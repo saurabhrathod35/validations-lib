@@ -1,17 +1,19 @@
 export class FieldValidation {
     public title: string;
     public type: string;
-    public condition: string;
+    public condition: string | Array<string>;
     public currentValue: any;
     public message: string;
     public params: Array<any> = [];
     public required: boolean;
     public uid?: string;
+    public format?: string;
 
     constructor(question: any, group?: any) {
         this.title = question.title;
         this.type = question.type.name || question.type || 'text';
         this.condition = question.condition || ((question.validation || {}).condition || {}).type || '';
+        this.format = question.format || ((question.validation || {}).condition || {}).format;
         this.currentValue = FieldValidation.readValue(question, group);
         this.params = question.params || [];
         this.message = question.message || ((question.validation || {}).condition || {}).message || '';

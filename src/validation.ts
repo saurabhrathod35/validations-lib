@@ -9,22 +9,39 @@ import { TimeValidation } from './services/time-validation';
 import { NumberValidationService } from './services/number-validation';
 import { ValidationUtils } from './util/validation-utils';
 import { FieldValidation } from './model/field.model';
+import { ValidationResult, Messages } from './model/result.model';
 
 export  class Validation {
 
-  static validate(question: FieldValidation | any) {
+  static validate(question: FieldValidation | any): ValidationResult {
     if (question) {
-      let params = ValidationUtils.hasEmptyValue(question.params) && ValidationUtils.hasEnoughParams(question);
       if (question.required && ValidationUtils.isEmpty(question.currentValue)) {
-        return ValidationUtils.isRequired(question)
+        return Messages.apply('required', question, question.params, ValidationUtils.isRequired(question));
       }
-      if (params && question.condition) {
-        const validationInstance = Validation.getInstance(question);
-        return validationInstance[question.condition](question.currentValue, question.params);
-      }else {
-        return {result:true,message:''}
+      // A field may carry several conditions; the first failure is the answer.
+      const steps = ValidationUtils.conditionSteps(question);
+      let outcome: ValidationResult = { result: true, message: '' };
+      for (const step of steps) {
+        const evaluated = Validation.evaluate(question, step.condition, step.params);
+        if (!evaluated.result) {
+          return evaluated;
+        }
+        outcome = evaluated;
       }
+      return outcome;
     }
+  }
+
+  private static evaluate(question: FieldValidation | any, condition: string, params: Array<any>): ValidationResult {
+    const usable = ValidationUtils.hasEmptyValue(params) && ValidationUtils.hasEnoughParams(condition, params);
+    if (!usable || !condition) {
+      return { result: true, message: '' };
+    }
+    const validationInstance = Validation.getInstance(question);
+    if (typeof validationInstance[condition] !== 'function') {
+      return { result: true, message: '' };
+    }
+    return Messages.apply(condition, question, params, validationInstance[condition](question.currentValue, params));
   }
  
   static validateWithGroup(entrys: Object, schema: Object, touchedFields?: object) {
@@ -39,7 +56,7 @@ export  class Validation {
       
       let singalQuestion = ValidationUtils.makeSimpleQuestion(question, entrys);
       if (singalQuestion.required && ValidationUtils.isEmpty(singalQuestion.currentValue)) {
-        validations[question.uid]= ValidationUtils.isRequired(singalQuestion);
+        validations[question.uid] = Messages.apply('required', singalQuestion, singalQuestion.params, ValidationUtils.isRequired(singalQuestion));
       }
 
       else if (!ValidationUtils.isEmpty(singalQuestion.currentValue) && touchedFields[question.uid]) {
@@ -67,22 +84,22 @@ export  class Validation {
         return new MultiSelectDropDownValidation(question);
 
       case 'date':
-        return new DateValidation(question, "MM/DD/YYYY");
+        return new DateValidation(question, question.format || "MM/DD/YYYY");
 
       case 'time':
-        return new TimeValidation(question, 'HH:mm');
+        return new TimeValidation(question, question.format || 'HH:mm');
 
       case 'timeRange':
-        return new TimeRangeValidation(question, 'HH:mm');
+        return new TimeRangeValidation(question, question.format || 'HH:mm');
 
       case 'datetime':
-        return new DateValidation(question, 'MM/DD/YYYY, HH:mm');
+        return new DateValidation(question, question.format || 'MM/DD/YYYY, HH:mm');
 
       case 'dateRange':
-        return new DateRangeValidation(question, 'MM/DD/YYYY');
+        return new DateRangeValidation(question, question.format || 'MM/DD/YYYY');
 
       case 'dateTimeRange':
-        return new DateRangeValidation(question, 'MM/DD/YYYY, HH:mm');
+        return new DateRangeValidation(question, question.format || 'MM/DD/YYYY, HH:mm');
 
       case 'checkbox':
         return new CheckboxValidation(question);

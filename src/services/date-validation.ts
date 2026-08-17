@@ -14,8 +14,8 @@ export class DateValidation {
 
   gt(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isAfter(compareWith[0]));
-      let message = this.question.message || `${this.question.title} must have greater than ${moment(compareWith[0]).format(this.format)} ${this.question.type}`;
+      let result = (ValidationUtils.toMoment(value, this.format).isAfter(ValidationUtils.toMoment(compareWith[0], this.format)));
+      let message = this.question.message || `${this.question.title} must have greater than ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} ${this.question.type}`;
       return { result: result, message: message };
     }
     return { result: true, message: '' }
@@ -23,8 +23,8 @@ export class DateValidation {
 
   lt(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isBefore(compareWith[0]));
-      let message = this.question.message || `${this.question.title} must have less than ${moment(compareWith[0]).format(this.format)} ${this.question.type}`;
+      let result = (ValidationUtils.toMoment(value, this.format).isBefore(ValidationUtils.toMoment(compareWith[0], this.format)));
+      let message = this.question.message || `${this.question.title} must have less than ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} ${this.question.type}`;
       return { result: result, message: message };
     }
     return { result: true, message: '' }
@@ -32,8 +32,8 @@ export class DateValidation {
 
   lte(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isSameOrBefore(compareWith[0]))
-      let message = this.question.message || `${this.question.title} must have less than or equal to ${moment(compareWith[0]).format(this.format)} date`;
+      let result = (ValidationUtils.toMoment(value, this.format).isSameOrBefore(ValidationUtils.toMoment(compareWith[0], this.format)))
+      let message = this.question.message || `${this.question.title} must have less than or equal to ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} date`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }
@@ -42,8 +42,8 @@ export class DateValidation {
 
   gte(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isSameOrAfter(compareWith[0]))
-      let message = this.question.message || `${this.question.title} must have greater than or equal to ${moment(compareWith[0]).format(this.format)} date`;
+      let result = (ValidationUtils.toMoment(value, this.format).isSameOrAfter(ValidationUtils.toMoment(compareWith[0], this.format)))
+      let message = this.question.message || `${this.question.title} must have greater than or equal to ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} date`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }
@@ -52,8 +52,8 @@ export class DateValidation {
 
   eq(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isSame(compareWith[0]))
-      let message = this.question.message || `${this.question.title} must be equal to ${moment(compareWith[0]).format(this.format)}`;
+      let result = (ValidationUtils.toMoment(value, this.format).isSame(ValidationUtils.toMoment(compareWith[0], this.format)))
+      let message = this.question.message || `${this.question.title} must be equal to ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)}`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }
@@ -61,8 +61,8 @@ export class DateValidation {
 
   notEqual(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (!(moment(value).isSame(compareWith[0])))
-      let message = this.question.message || `${this.question.title} must not be equal to ${moment(compareWith[0]).format(this.format)}`;
+      let result = (!(ValidationUtils.toMoment(value, this.format).isSame(ValidationUtils.toMoment(compareWith[0], this.format))))
+      let message = this.question.message || `${this.question.title} must not be equal to ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)}`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }
@@ -70,8 +70,8 @@ export class DateValidation {
 
   between(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (moment(value).isBetween(compareWith[0], compareWith[1], undefined, '[]'))
-      let message = this.question.message || `${this.question.title} must have ${this.question.type} between ${moment(compareWith[0]).format(this.format)} to ${moment(compareWith[1]).format(this.format)}`;
+      let result = (ValidationUtils.toMoment(value, this.format).isBetween(ValidationUtils.toMoment(compareWith[0], this.format), ValidationUtils.toMoment(compareWith[1], this.format), undefined, '[]'))
+      let message = this.question.message || `${this.question.title} must have ${this.question.type} between ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} to ${ValidationUtils.toMoment(compareWith[1], this.format).format(this.format)}`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }
@@ -79,8 +79,8 @@ export class DateValidation {
 
   notBetween(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (!(moment(value).isBetween(compareWith[0], compareWith[1], undefined, '[]')))
-      let message = this.question.message || `${this.question.title} must not have ${this.question.type} between ${moment(compareWith[0]).format(this.format)} to ${moment(compareWith[1]).format(this.format)}`;
+      let result = (!(ValidationUtils.toMoment(value, this.format).isBetween(ValidationUtils.toMoment(compareWith[0], this.format), ValidationUtils.toMoment(compareWith[1], this.format), undefined, '[]')))
+      let message = this.question.message || `${this.question.title} must not have ${this.question.type} between ${ValidationUtils.toMoment(compareWith[0], this.format).format(this.format)} to ${ValidationUtils.toMoment(compareWith[1], this.format).format(this.format)}`;
       return { result: result, message: message }
     }
     return { result: true, message: '' }

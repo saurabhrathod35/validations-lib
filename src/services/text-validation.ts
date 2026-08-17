@@ -101,6 +101,20 @@ export class TextValidation {
     return { result: result, message: message }
   };
 
+  // Accepts a RegExp or a pattern string, optionally with flags: ['^\\d+$', 'i']
+  matches(value: string, compareWith: Array<any>) {
+    const pattern = (compareWith[0] instanceof RegExp) ? compareWith[0] : new RegExp(compareWith[0], compareWith[1]);
+    let result = pattern.test(value || '');
+    let message = this.question.message || `${this.question.title} is not in the expected format`;
+    return { result: result, message: message }
+  };
+
+  notMatches(value: string, compareWith: Array<any>) {
+    let result = !this.matches(value, compareWith).result;
+    let message = this.question.message || `${this.question.title} is in a format that is not allowed`;
+    return { result: result, message: message }
+  };
+
   endswith(value: string, compareWith: Array<string>) {
     let result = ((value || '').endsWith(compareWith[0]))
     let message = this.question.message || `${this.question.title} must ends with ${compareWith[0]}`;

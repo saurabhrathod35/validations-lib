@@ -26,7 +26,25 @@ export class ValidationUtils {
   }
 
   static validateDate(firstValue: string | Date, secondValue: string | Date, condition: string = 'isSame', format = "HH:mm") {
-    return moment(moment(firstValue).format(format), format)[condition](moment(moment(secondValue).format(format), format))
+    return moment(ValidationUtils.toMoment(firstValue, format).format(format), format)[condition](
+      moment(ValidationUtils.toMoment(secondValue, format).format(format), format))
+  }
+
+  // Parse with the field's own format first, so DD/MM/YYYY input is not read as
+  // MM/DD/YYYY. Dates and ISO strings still parse the way moment expects, and
+  // anything unrecognised falls back rather than throwing.
+  static toMoment(value: any, format?: string) {
+    if (value instanceof Date || moment.isMoment(value)) {
+      return moment(value);
+    }
+    if (format && typeof value === 'string') {
+      const parsed = moment(value, format, true);
+      if (parsed.isValid()) {
+        return parsed;
+      }
+    }
+    const iso = moment(value, moment.ISO_8601, true);
+    return iso.isValid() ? iso : moment(new Date(value));
   }
 
   static checkIsArray(value: Array<any> | string) {
@@ -57,9 +75,22 @@ export class ValidationUtils {
   }
 
   // between/notBetween need both bounds; every other condition needs one.
-  static hasEnoughParams(question: any) {
-    const needed = (question.condition === 'between' || question.condition === 'notBetween') ? 2 : 1;
-    return ValidationUtils.returnNull(question.params, needed);
+  static hasEnoughParams(condition: string, params: Array<any>) {
+    const needed = (condition === 'between' || condition === 'notBetween') ? 2 : 1;
+    return ValidationUtils.returnNull(params, needed);
+  }
+
+  // One condition uses `params` as-is. Several conditions pair up with `params`
+  // by index, each entry holding that condition's own bounds:
+  //   condition: ['gte', 'matches'], params: [[8], ['\\d']]
+  static conditionSteps(question: any): Array<{ condition: string, params: Array<any> }> {
+    if (!Array.isArray(question.condition)) {
+      return [{ condition: question.condition, params: question.params }];
+    }
+    return question.condition.map((condition: string, index: number) => {
+      const params = (question.params || [])[index];
+      return { condition: condition, params: Array.isArray(params) ? params : [params] };
+    });
   }
 
  static isRequired(question){

@@ -54,3 +54,45 @@ const crossRef = Validation.validateWithGroup({ '#3': 40, '#4': 50 }, [
 assert.strictEqual(crossRef['#4'].result, false);
 
 console.log('all regression checks passed');
+
+// --- features -------------------------------------------------------------
+const { Messages } = require('../../lib/index.js');
+
+// several conditions on one field: params pair up by index, first failure wins
+const password = { title: 'Password', type: 'text', condition: ['gte', 'matches'], params: [[8], ['\\d']] };
+assert.strictEqual(Validation.validate({ ...password, currentValue: 'abcdefghi' }).result, false);
+assert.strictEqual(Validation.validate({ ...password, currentValue: 'short1' }).result, false);
+assert.strictEqual(Validation.validate({ ...password, currentValue: 'abcdefgh1' }).result, true);
+
+// per-field date format: the same digits read differently under each format
+const dayFirst = { title: 'd', type: 'date', format: 'DD/MM/YYYY', condition: 'lt', currentValue: '03/01/2024', params: ['02/02/2024'] };
+assert.strictEqual(Validation.validate(dayFirst).result, true);              // 3 Jan < 2 Feb
+assert.strictEqual(Validation.validate({ ...dayFirst, format: 'MM/DD/YYYY' }).result, false); // 1 Mar > 2 Feb
+
+// regex conditions
+const email = { title: 'Email', type: 'text', condition: 'matches', params: ['^[^@\\s]+@[^@\\s]+\\.[a-z]+$'] };
+assert.strictEqual(Validation.validate({ ...email, currentValue: 'user@example.com' }).result, true);
+assert.strictEqual(Validation.validate({ ...email, currentValue: 'nope' }).result, false);
+assert.strictEqual(Validation.validate({ title: 'x', type: 'text', condition: 'notMatches', currentValue: 'abc', params: ['\\d'] }).result, true);
+
+// message overrides, and a field's own message still winning over them
+Messages.setMessages({
+  gt: (question, params) => `${question.title} doit etre superieur a ${params[0]}`,
+  required: (question) => `${question.title} est obligatoire`
+});
+assert.strictEqual(
+  Validation.validate({ title: 'Age', type: 'number', condition: 'gt', currentValue: 5, params: [10] }).message,
+  'Age doit etre superieur a 10'
+);
+assert.strictEqual(
+  Validation.validate({ title: 'Age', type: 'number', required: true, currentValue: '', condition: 'gt', params: [10] }).message,
+  'Age est obligatoire'
+);
+assert.strictEqual(
+  Validation.validate({ title: 'Age', type: 'number', condition: 'gt', currentValue: 5, params: [10], message: 'mine' }).message,
+  'mine'
+);
+Messages.reset();
+assert.strictEqual(Validation.validate({ title: 'Age', type: 'number', condition: 'gt', currentValue: 5, params: [10] }).message, 'Age must be greater than 10');
+
+console.log('all feature checks passed');

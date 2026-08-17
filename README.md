@@ -32,9 +32,9 @@ You didn't write that message. You can, though — set `message` and yours wins,
 TypeScript / Angular:
 
 ```ts
-import { Validation, FieldValidation } from 'validations-lib';
+import { Validation, FieldValidation, ValidationResult } from 'validations-lib';
 
-const result = Validation.validate(new FieldValidation(question));
+const result: ValidationResult = Validation.validate(new FieldValidation(question));
 ```
 
 ---
@@ -51,6 +51,7 @@ const result = Validation.validate(new FieldValidation(question));
 | `message`      | Your message; omit for a generated one       | auto-generated |
 | `required`     | Empty value fails outright                   | `false`        |
 | `uid`          | Identity — needed for groups & cross-refs    | `''`           |
+| `format`       | Date/time parsing format (moment syntax)     | per type       |
 
 Two rules worth internalizing:
 
@@ -81,8 +82,73 @@ Ranges also accept the nested form `[[from], [to]]`, because some date pickers e
 | `gt` `lt` `gte` `lte` `eq` `notEqual`                             | every type             |
 | `between` `notBetween`                                            | every type (ranges compare both endpoints) |
 | `sameAs` `notSame` `contains` `notContains` `startwith` `endswith` | `text` only            |
+| `matches` `notMatches`                                            | `text` only (regex)    |
 
 > ⚠️ Careful: on `text`, `gt` means *longer than*, not *alphabetically after*. `"zebra"` is not greater than `"apple"` here; it is merely one character longer. `sameAs` is the one that compares the actual string.
+
+### 🔤 Regex conditions
+
+Pass a pattern string (with optional flags as the second param) or a `RegExp`:
+
+```js
+Validation.validate({
+  title: 'Email',
+  type: 'text',
+  condition: 'matches',
+  currentValue: 'user@example.com',
+  params: ['^[^@\\s]+@[^@\\s]+\\.[a-z]+$']
+});
+// => { result: true, message: '' }
+```
+
+`params: [/^\d+$/]` works too, and `notMatches` is the inverse — handy for banning patterns rather than requiring them.
+
+### 🧩 Several conditions on one field
+
+`condition` also takes an array. Each condition gets its own slot in `params`, paired by index, and the **first failure is what you get back** — so order them the way you'd want them reported.
+
+```js
+Validation.validate({
+  title: 'Password',
+  type: 'text',
+  condition: ['gte', 'matches'],   // at least 8 characters, and contains a digit
+  params: [[8], ['\\d']],
+  currentValue: 'abcdefgh1'
+});
+// => { result: true, message: '' }
+```
+
+### 🌍 Date formats
+
+Date and time types no longer assume American ordering. Set `format` per field — any moment format string:
+
+```js
+Validation.validate({
+  title: 'Start',
+  type: 'date',
+  format: 'DD/MM/YYYY',
+  condition: 'lt',
+  currentValue: '03/01/2024',   // 3 January, not 1 March
+  params: ['02/02/2024']
+});
+```
+
+Defaults stay as they were (`MM/DD/YYYY`, `HH:mm`, `MM/DD/YYYY, HH:mm`), so existing fields are unaffected. Values are parsed with the field's own format first, then ISO, then anything else — no more moment fallback warnings.
+
+### 🗣️ Your own default messages
+
+Per-field `message` is still the override of last resort, but if you want the *library's* wording changed globally — another language, another tone — register templates once:
+
+```js
+const { Messages } = require('validations-lib');
+
+Messages.setMessages({
+  gt: (question, params) => `${question.title} doit être supérieur à ${params[0]}`,
+  required: (question) => `${question.title} est obligatoire`
+});
+```
+
+Keyed by condition name, plus `required` for the empty-value case. A field's own `message` still wins. `Messages.reset()` puts the English back. 🇫🇷
 
 ---
 
