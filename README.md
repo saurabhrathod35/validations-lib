@@ -1,10 +1,10 @@
-# validations-lib
+# validations-lib 🚦
 
 **One object in. One `{result, message}` out.**
 
 No chained builders, no decorators, no schema DSL to learn on a Sunday. You describe a field as plain data — what it is, what it must satisfy — and the library tells you whether the value passes and what to say when it doesn't. Works in Node and in Angular (6+).
 
-Written because the fourth time you hand-write "Age must be greater than or equal to 18", something inside you dies.
+Written because the fourth time you hand-write "Age must be greater than or equal to 18", something inside you dies. 💀
 
 ```bash
 npm install validations-lib
@@ -12,7 +12,7 @@ npm install validations-lib
 
 ---
 
-## 30 seconds
+## ⏱️ 30 seconds
 
 ```js
 const { Validation } = require('validations-lib');
@@ -39,7 +39,7 @@ const result = Validation.validate(new FieldValidation(question));
 
 ---
 
-## The field object
+## 🧱 The field object
 
 | Property       | What it is                                  | Default        |
 | -------------- | ------------------------------------------- | -------------- |
@@ -55,9 +55,9 @@ const result = Validation.validate(new FieldValidation(question));
 Two rules worth internalizing:
 
 - **One param = one bound.** Two params = a range, so `between` / `notBetween` need both.
-- **Nothing to compare against = pass.** Missing `condition` or empty `params` returns `{result: true, message: ''}`. The library never invents a failure it can't justify — unlike that one regex in your codebase nobody dares touch.
+- **Nothing to compare against = pass.** Missing `condition` or empty `params` returns `{result: true, message: ''}`. The library never invents a failure it can't justify — unlike that one regex in your codebase nobody dares touch. 🕸️
 
-### Types
+### 🏷️ Types
 
 | Type                   | Compares                                                     |
 | ---------------------- | ------------------------------------------------------------ |
@@ -72,9 +72,9 @@ Two rules worth internalizing:
 | `timeRange`            | `[from, to]`                                                  |
 | `dateTimeRange`        | `[from, to]`                                                  |
 
-Ranges also accept the nested form `[[from], [to]]`, because some date pickers emit that and arguing with a date picker is a fight nobody wins.
+Ranges also accept the nested form `[[from], [to]]`, because some date pickers emit that and arguing with a date picker is a fight nobody wins. 📅🥊
 
-### Conditions
+### ⚖️ Conditions
 
 | Condition                                                        | Works on               |
 | ---------------------------------------------------------------- | ---------------------- |
@@ -82,11 +82,11 @@ Ranges also accept the nested form `[[from], [to]]`, because some date pickers e
 | `between` `notBetween`                                            | every type (ranges compare both endpoints) |
 | `sameAs` `notSame` `contains` `notContains` `startwith` `endswith` | `text` only            |
 
-> Careful: on `text`, `gt` means *longer than*, not *alphabetically after*. `"zebra"` is not greater than `"apple"` here; it is merely one character longer. `sameAs` is the one that compares the actual string.
+> ⚠️ Careful: on `text`, `gt` means *longer than*, not *alphabetically after*. `"zebra"` is not greater than `"apple"` here; it is merely one character longer. `sameAs` is the one that compares the actual string.
 
 ---
 
-## Many fields at once
+## 👨‍👩‍👧‍👦 Many fields at once
 
 Give every field a `uid`, hand over a values map, get a verdict per field plus one for the whole form.
 
@@ -113,7 +113,7 @@ Validation.validateWithGroup(entry, schema);
 
 `validateWithGroup` also digs through nested schemas — `blocks`, `sections`, `fields` — so you can pass the form definition you already have instead of flattening it first.
 
-### Fields that compare to other fields
+### 🔗 Fields that compare to other fields
 
 Put a `uid` where a number would go. It's resolved from the entry map at validation time.
 
@@ -127,9 +127,9 @@ Put a `uid` where a number would go. It's resolved from the entry map at validat
 }
 ```
 
-That's how "end date must be after start date" stops being 40 lines of special-case code with a `// TODO: refactor` from 2017 on top.
+That's how "end date must be after start date" stops being 40 lines of special-case code with a `// TODO: refactor` from 2017 on top. 🪦
 
-### Only validating what's been touched
+### 👆 Only validating what's been touched
 
 ```js
 Validation.validateWithGroup(entry, schema, { '#1': true, '#2': false });
@@ -139,7 +139,7 @@ Untouched fields report `{result: true, message: ''}` — no shouting at the use
 
 ---
 
-## Params, one at a time
+## 🎯 Params, one at a time
 
 When min and max arrive from different places, don't build the array by hand:
 
@@ -152,21 +152,21 @@ field.setInput('27');
 
 ---
 
-## FAQ
+## 🙋 FAQ
 
 **Why not zod / yup / joi?**
 Because your form config already lives in a database as JSON, and turning JSON into a chained builder at runtime is how people end up writing `eval`. Here the config *is* the API.
 
 **`params` holds a max of two values. Why?**
-Because a condition with three bounds is two conditions wearing a trench coat.
+Because a condition with three bounds is two conditions wearing a trench coat. 🕵️
 
 **It said my field is valid but I'm sure it isn't.**
 Check `condition` and `params`. Empty either one and validation passes by design — see the rule above. It's a feature, delivered with a straight face.
 
 ---
 
-## Contributing / requirements
+## 📬 Contributing / requirements
 
-Issues and mail both work: <saurabhrathod35@gmail.com>. Bug reports with a reproducing field object get fixed first; bug reports saying "doesn't work" get a thoughtful stare.
+Issues and mail both work: <saurabhrathod35@gmail.com>. Bug reports with a reproducing field object get fixed first; bug reports saying "doesn't work" get a thoughtful stare. 🧐
 
 Repo: https://github.com/saurabhrathod35/validations-lib
