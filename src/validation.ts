@@ -14,8 +14,8 @@ export  class Validation {
 
   static validate(question: FieldValidation | any) {
     if (question) {
-      let params = ValidationUtils.hasEmptyValue(question.params);
-      if(question.required && question.currentValue==null || ''){
+      let params = ValidationUtils.hasEmptyValue(question.params) && ValidationUtils.hasEnoughParams(question);
+      if (question.required && ValidationUtils.isEmpty(question.currentValue)) {
         return ValidationUtils.isRequired(question)
       }
       if (params && question.condition) {
@@ -38,11 +38,11 @@ export  class Validation {
       touchedFields[question.uid] =( touchedFields && touchedFields[question.uid]) ? touchedFields[question.uid] : true
       
       let singalQuestion = ValidationUtils.makeSimpleQuestion(question, entrys);
-      if (singalQuestion.required && singalQuestion.currentValue == '') {
+      if (singalQuestion.required && ValidationUtils.isEmpty(singalQuestion.currentValue)) {
         validations[question.uid]= ValidationUtils.isRequired(singalQuestion);
       }
 
-      else if (entrys[question.uid] && touchedFields[question.uid]) {
+      else if (!ValidationUtils.isEmpty(singalQuestion.currentValue) && touchedFields[question.uid]) {
         validations[question.uid] = Validation.validate(singalQuestion);
       }
       else {

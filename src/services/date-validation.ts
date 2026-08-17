@@ -79,7 +79,7 @@ export class DateValidation {
 
   notBetween(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
-      let result = (!(moment(value).isBetween(compareWith[0], compareWith[1])))
+      let result = (!(moment(value).isBetween(compareWith[0], compareWith[1], undefined, '[]')))
       let message = this.question.message || `${this.question.title} must not have ${this.question.type} between ${moment(compareWith[0]).format(this.format)} to ${moment(compareWith[1]).format(this.format)}`;
       return { result: result, message: message }
     }

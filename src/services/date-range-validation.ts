@@ -80,7 +80,7 @@ export class DateRangeValidation {
     let tmpCompareWith = ValidationUtils.fieldBifurcation(compareWith);
     if (ValidationUtils.returnNull(tmpCompareWith)) {
       let result = (moment(value[0]).isBetween(tmpCompareWith[0], (tmpCompareWith[1] || tmpCompareWith[0]), undefined, '[]'))
-        && (moment(value[1]).isBetween(tmpCompareWith[0], (tmpCompareWith[1]), undefined, '[]'));
+        && (moment(value[1]).isBetween(tmpCompareWith[0], (tmpCompareWith[1] || tmpCompareWith[0]), undefined, '[]'));
       let message = this.question.message || `${this.question.title} must be between ${moment(tmpCompareWith[0])
         .format(this.format)} to ${moment(tmpCompareWith[1] || tmpCompareWith[0]).format(this.format)}`;
       return { result: result, message: message }
@@ -92,7 +92,7 @@ export class DateRangeValidation {
     let tmpCompareWith = ValidationUtils.fieldBifurcation(compareWith);
     if (ValidationUtils.returnNull(tmpCompareWith)) {
       let result = (!(moment(value[0]).isBetween(tmpCompareWith[0], (tmpCompareWith[1] || tmpCompareWith[0]), undefined, '[]'))
-        && (moment(value[1]).isBetween(tmpCompareWith[0], (tmpCompareWith[1]), undefined, '[]')));
+        && !(moment(value[1]).isBetween(tmpCompareWith[0], (tmpCompareWith[1] || tmpCompareWith[0]), undefined, '[]')));
       let message = this.question.message || `${this.question.title} must be not between ${moment(tmpCompareWith[1] || tmpCompareWith[0])
         .format(this.format)} to ${moment(tmpCompareWith[1] || tmpCompareWith[0])
           .format(this.format)}`;

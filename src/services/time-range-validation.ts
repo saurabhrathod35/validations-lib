@@ -50,7 +50,7 @@ export class TimeRangeValidation {
     let tmpCompareWith = ValidationUtils.fieldBifurcation(compareWith)
     if (ValidationUtils.returnNull(tmpCompareWith)) {
       let result = ValidationUtils.validateDate(value[0], (tmpCompareWith[0]), 'isSameOrAfter', this.format)
-        && ValidationUtils.validateDate(value[0], (tmpCompareWith[1] || tmpCompareWith[0]), 'isSameOrAfter', this.format);
+        && ValidationUtils.validateDate(value[1], (tmpCompareWith[1] || tmpCompareWith[0]), 'isSameOrAfter', this.format);
       let message = this.question.message || `${this.question.title} must be greater than or equal to ${moment(tmpCompareWith[1] || tmpCompareWith[0]).format(this.format)}`;
       return { result: result, message: message }
     }
@@ -101,7 +101,7 @@ export class TimeRangeValidation {
     if (ValidationUtils.returnNull(tmpCompareWith)) {
       let result = (!(moment(moment(value[0]).format(this.format), this.format)
         .isBetween(moment(moment(tmpCompareWith[0]).format(this.format), this.format), moment(moment(tmpCompareWith[1])
-          .format(this.format), this.format))) && (moment(moment(value[1]).format(this.format), this.format)
+          .format(this.format), this.format))) && !(moment(moment(value[1]).format(this.format), this.format)
             .isBetween(moment(moment(tmpCompareWith[0]).format(this.format), this.format), moment(moment(tmpCompareWith[1]).format(this.format), this.format))))
       let message = this.question.message || `${this.question.title} must be not between ${moment(tmpCompareWith[1] || tmpCompareWith[0])
         .format(this.format)} to ${moment(tmpCompareWith[1] || tmpCompareWith[0]).format(this.format)}`;

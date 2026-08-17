@@ -52,7 +52,7 @@ export class MultiSelectDropDownValidation {
   }
 
   notBetween(value: Array<any>, compareWith: Array<any>) {
-    let result = (!((value.length >= ValidationUtils.checkIsArray(compareWith[0])) && (value.length <= ValidationUtils.checkIsArray(compareWith[1]))))
+    let result = (!((value.length > ValidationUtils.checkIsArray(compareWith[0])) && (value.length < ValidationUtils.checkIsArray(compareWith[1]))))
     let message = this.question.message || `${this.question.title} must not have number of selected value(s) between ${ValidationUtils.checkIsArray(compareWith[0])} to ${(compareWith[1])}`;
     return { result: result, message: message }
   }

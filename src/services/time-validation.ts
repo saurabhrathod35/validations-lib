@@ -82,7 +82,7 @@ export class TimeValidation {
   notBetween(value: Date | string, compareWith: Array<any>) {
     if (ValidationUtils.returnNull(compareWith)) {
       let result = (!(moment(moment(value).format(this.format), this.format)
-        .isBetween(moment(moment(compareWith[0]).format(this.format), this.format), moment(moment(compareWith[1]).format(this.format), this.format))))
+        .isBetween(moment(moment(compareWith[0]).format(this.format), this.format), moment(moment(compareWith[1]).format(this.format), this.format), undefined, '[]')))
       let message = this.question.message || `${this.question.title} must be not between ${moment(compareWith[0]).format(this.format)} to ${moment(compareWith[1]).format(this.format)}`;
       return { result: result, message: message };
     }

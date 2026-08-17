@@ -37,14 +37,29 @@ export class ValidationUtils {
     }
   }
 
-  static returnNull(array: Array<any>) {
-    return (array.length >= 1);
+  // True when at least `minimum` usable bounds are present. 0 and false are
+  // usable values; only null/undefined/'' are not.
+  static returnNull(array: Array<any>, minimum: number = 1) {
+    return ValidationUtils.presentValues(array).length >= minimum;
   }
 
   static hasEmptyValue(params: Array<any>) {
-    return !(params || []).some(item => {
-      return !item
-    });
+    return ValidationUtils.presentValues(params).length === (params || []).length;
+  }
+
+  static presentValues(params: Array<any>) {
+    return (params || []).filter(item => item !== null && item !== undefined && item !== '');
+  }
+
+  static isEmpty(value: any) {
+    return value === null || value === undefined || value === ''
+      || (Array.isArray(value) && ValidationUtils.arrayLength(value) === 0);
+  }
+
+  // between/notBetween need both bounds; every other condition needs one.
+  static hasEnoughParams(question: any) {
+    const needed = (question.condition === 'between' || question.condition === 'notBetween') ? 2 : 1;
+    return ValidationUtils.returnNull(question.params, needed);
   }
 
  static isRequired(question){

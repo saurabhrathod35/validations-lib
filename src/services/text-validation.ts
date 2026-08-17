@@ -65,7 +65,7 @@ export class TextValidation {
   notBetween(value: string, compareWith: Array<string>) {
     let firstValue = ValidationUtils.toNumber(compareWith[0])
     let secondValue = ValidationUtils.toNumber(compareWith[1]);
-    let result = (!((value.length >= firstValue) && (value.length <= secondValue)))
+    let result = (!((value.length > firstValue) && (value.length < secondValue)))
     let message = this.question.message || `${this.question.title} must be not between ${firstValue} to ${secondValue}`;
     return { result: result, message: message }
   };

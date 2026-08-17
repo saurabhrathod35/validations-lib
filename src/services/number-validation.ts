@@ -53,7 +53,7 @@ export class NumberValidationService {
   }
 
   notBetween(value: any, compareWith: Array<any>) {
-    let result = (!((parseFloat(value) >= parseFloat(compareWith[0])) && (parseFloat(value) <= parseFloat(compareWith[1]))))
+    let result = (!((parseFloat(value) > parseFloat(compareWith[0])) && (parseFloat(value) < parseFloat(compareWith[1]))))
     let message = this.question.message || `${this.question.title} must be not between ${parseFloat(compareWith[0])} to ${(compareWith[1])}`;
     return { result: result, message: message }
   }
