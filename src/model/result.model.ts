@@ -1,6 +1,13 @@
 export interface ValidationResult {
     result: boolean;
     message: string;
+    /** Stable key for the failure, e.g. GTE_ERROR, REQUIRED_ERROR. Empty when valid. */
+    code?: string;
+}
+
+export interface ConfigProblem {
+    code: string;
+    message: string;
 }
 
 // Keyed by condition name, plus 'required' for the empty-value case.
@@ -23,10 +30,19 @@ export class Messages {
     }
 
     static apply(condition: string, question: any, params: Array<any>, generated: ValidationResult): ValidationResult {
+        const code = generated.result ? '' : ((question || <any>{}).code || Messages.toCode(condition));
         const override = Messages.overrides[condition];
-        if (!override || (question || <any>{}).message) {
-            return generated;
+        const message = (override && !(question || <any>{}).message)
+            ? override(question, params || [])
+            : generated.message;
+        return { result: generated.result, message: message, code: code };
+    }
+
+    // gte -> GTE_ERROR, notBetween -> NOT_BETWEEN_ERROR
+    static toCode(condition: string) {
+        if (!condition) {
+            return 'INVALID_ERROR';
         }
-        return { result: generated.result, message: override(question, params || []) };
+        return condition.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toUpperCase() + '_ERROR';
     }
 }

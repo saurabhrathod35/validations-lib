@@ -69,15 +69,53 @@ export class ValidationUtils {
     return (params || []).filter(item => item !== null && item !== undefined && item !== '');
   }
 
+  // Whitespace is not a value — '   ' fails `required`, as it should.
   static isEmpty(value: any) {
     return value === null || value === undefined || value === ''
+      || (typeof value === 'string' && value.trim() === '')
       || (Array.isArray(value) && ValidationUtils.arrayLength(value) === 0);
   }
 
-  // between/notBetween need both bounds; every other condition needs one.
+  // between/notBetween need both bounds, notBlank needs none, the rest need one.
+  static neededParams(condition: string) {
+    if (condition === 'between' || condition === 'notBetween') {
+      return 2;
+    }
+    return (condition === 'notBlank') ? 0 : 1;
+  }
+
   static hasEnoughParams(condition: string, params: Array<any>) {
-    const needed = (condition === 'between' || condition === 'notBetween') ? 2 : 1;
-    return ValidationUtils.returnNull(params, needed);
+    return ValidationUtils.returnNull(params, ValidationUtils.neededParams(condition));
+  }
+
+  // Bounds that exist but can never work: text 'abc' where a number is needed,
+  // a regex that will not compile, a date the parser cannot read.
+  static paramProblems(question: any, condition: string, params: Array<any>, label: string) {
+    const problems = [];
+    const numeric = ['number', 'currency', 'percentage', 'scientific', 'exponential'].indexOf(question.type) !== -1;
+    const dated = ['date', 'datetime', 'dateRange', 'dateTimeRange', 'time', 'timeRange'].indexOf(question.type) !== -1;
+
+    (params || []).forEach(param => {
+      if (typeof param === 'string' && param.charAt(0) === '#') {
+        return; // a reference to another field, resolved at validation time
+      }
+      if (condition === 'matches' || condition === 'notMatches') {
+        try {
+          new RegExp(param);
+        } catch (error) {
+          problems.push({ code: 'INVALID_PATTERN', message: `${label}: '${param}' is not a valid regular expression` });
+        }
+        return;
+      }
+      if (numeric && isNaN(parseFloat(param))) {
+        problems.push({ code: 'INVALID_NUMBER_PARAM', message: `${label}: '${param}' is not a number` });
+        return;
+      }
+      if (dated && !ValidationUtils.toMoment(param, question.format).isValid()) {
+        problems.push({ code: 'INVALID_DATE_PARAM', message: `${label}: '${param}' is not a readable date` });
+      }
+    });
+    return problems;
   }
 
   // One condition uses `params` as-is. Several conditions pair up with `params`

@@ -101,6 +101,13 @@ export class TextValidation {
     return { result: result, message: message }
   };
 
+  // Takes no params: rejects '' and whitespace-only input.
+  notBlank(value: string, compareWith?: Array<any>) {
+    let result = !ValidationUtils.isEmpty(value);
+    let message = this.question.message || `${this.question.title} cannot be blank`;
+    return { result: result, message: message }
+  };
+
   // Accepts a RegExp or a pattern string, optionally with flags: ['^\\d+$', 'i']
   matches(value: string, compareWith: Array<any>) {
     const pattern = (compareWith[0] instanceof RegExp) ? compareWith[0] : new RegExp(compareWith[0], compareWith[1]);

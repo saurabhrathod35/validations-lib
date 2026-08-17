@@ -1,6 +1,6 @@
 # validations-lib 🚦
 
-**One object in. One `{result, message}` out.**
+**One object in. One `{result, message, code}` out.**
 
 No chained builders, no decorators, no schema DSL to learn on a Sunday. You describe a field as plain data — what it is, what it must satisfy — and the library tells you whether the value passes and what to say when it doesn't. Works in Node and in Angular (6+).
 
@@ -24,7 +24,7 @@ Validation.validate({
   currentValue: 17,
   params: [18]
 });
-// => { result: false, message: 'Age must be greater than or equal to 18' }
+// => { result: false, message: 'Age must be greater than or equal to 18', code: 'GTE_ERROR' }
 ```
 
 You didn't write that message. You can, though — set `message` and yours wins, because the library has no ego about prose.
@@ -52,6 +52,7 @@ const result: ValidationResult = Validation.validate(new FieldValidation(questio
 | `required`     | Empty value fails outright                   | `false`        |
 | `uid`          | Identity — needed for groups & cross-refs    | `''`           |
 | `format`       | Date/time parsing format (moment syntax)     | per type       |
+| `code`         | Your own failure code, instead of the generated one | per condition |
 
 Two rules worth internalizing:
 
@@ -83,6 +84,7 @@ Ranges also accept the nested form `[[from], [to]]`, because some date pickers e
 | `between` `notBetween`                                            | every type (ranges compare both endpoints) |
 | `sameAs` `notSame` `contains` `notContains` `startwith` `endswith` | `text` only            |
 | `matches` `notMatches`                                            | `text` only (regex)    |
+| `notBlank`                                                        | `text` only (no params) |
 
 > ⚠️ Careful: on `text`, `gt` means *longer than*, not *alphabetically after*. `"zebra"` is not greater than `"apple"` here; it is merely one character longer. `sameAs` is the one that compares the actual string.
 
@@ -134,6 +136,32 @@ Validation.validate({
 ```
 
 Defaults stay as they were (`MM/DD/YYYY`, `HH:mm`, `MM/DD/YYYY, HH:mm`), so existing fields are unaffected. Values are parsed with the field's own format first, then ISO, then anything else — no more moment fallback warnings.
+
+### 🏷️ Error codes
+
+Every failure carries a stable `code` alongside the message — the thing you actually key translations off, rather than string-matching English:
+
+```js
+Validation.validate({ title: 'Age', type: 'number', condition: 'gte', currentValue: 15, params: [18] });
+// => { result: false, message: 'Age must be greater than or equal to 18', code: 'GTE_ERROR' }
+```
+
+Codes are the condition name in upper snake case plus `_ERROR` (`GTE_ERROR`, `NOT_BETWEEN_ERROR`, `MATCHES_ERROR`), plus `REQUIRED_ERROR` for empty values. Valid results carry `code: ''`. Set `code` on a field to use your own instead.
+
+### 🔍 Checking your schema
+
+`validate()` passes when it can't evaluate a field — better than inventing a failure, but it means a typo'd config silently validates everything. `Validation.check()` shows you those:
+
+```js
+Validation.check({ title: 'Age', type: 'number', condition: 'gte', params: ['eighteen'] });
+// => [{ code: 'INVALID_NUMBER_PARAM', message: "Age (gte): 'eighteen' is not a number" }]
+```
+
+Empty array means the field is evaluable. It catches unknown conditions for the type, missing bounds, regexes that won't compile, unreadable dates, and condition/param arrays that don't line up. Run it over your schema in a test and typos stop reaching production. 🔦
+
+### 🚫 Blank values
+
+`'   '` is not a value. Whitespace-only strings count as empty for `required`, and the `notBlank` condition (no params) rejects them anywhere else.
 
 ### 🗣️ Your own default messages
 

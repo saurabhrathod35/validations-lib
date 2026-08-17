@@ -6,7 +6,7 @@ const { Validation, FieldValidation } = require('../../lib/index.js');
 // required + empty string must report "required", not run the condition
 assert.deepStrictEqual(
   Validation.validate({ title: 'Name', type: 'text', required: true, currentValue: '', condition: 'gt', params: [3] }),
-  { result: false, message: 'Name is Required' }
+  { result: false, message: 'Name is Required', code: 'REQUIRED_ERROR' }
 );
 
 // 0 as a bound is a real bound, not "nothing to compare against"
@@ -25,7 +25,7 @@ assert.strictEqual(Validation.validate({ title: 'c', type: 'checkbox', condition
 // between needs both bounds; one bound must not silently compare against "now"
 assert.deepStrictEqual(
   Validation.validate({ title: 'd', type: 'date', condition: 'between', currentValue: '06/15/2024', params: ['01/01/2024'] }),
-  { result: true, message: '' }
+  { result: true, message: '', code: '' }
 );
 
 // notBetween is the exact complement of between, boundaries included
@@ -96,3 +96,31 @@ Messages.reset();
 assert.strictEqual(Validation.validate({ title: 'Age', type: 'number', condition: 'gt', currentValue: 5, params: [10] }).message, 'Age must be greater than 10');
 
 console.log('all feature checks passed');
+
+// --- codes, config checking, blank values ---------------------------------
+
+// every failure carries a stable code; valid results carry an empty one
+assert.strictEqual(Validation.validate({ title: 'n', type: 'number', condition: 'gte', currentValue: 5, params: [10] }).code, 'GTE_ERROR');
+assert.strictEqual(Validation.validate({ title: 'n', type: 'number', condition: 'notBetween', currentValue: 27, params: [25, 30] }).code, 'NOT_BETWEEN_ERROR');
+assert.strictEqual(Validation.validate({ title: 'n', type: 'text', required: true, currentValue: '', condition: 'gt', params: [3] }).code, 'REQUIRED_ERROR');
+assert.strictEqual(Validation.validate({ title: 'n', type: 'number', condition: 'gte', currentValue: 15, params: [10] }).code, '');
+// a field can name its own code
+assert.strictEqual(Validation.validate({ title: 'n', type: 'number', condition: 'gte', currentValue: 5, params: [10], code: 'LOAN_TOO_SMALL' }).code, 'LOAN_TOO_SMALL');
+
+// whitespace-only input is empty
+assert.strictEqual(Validation.validate({ title: 'Name', type: 'text', required: true, currentValue: '   ', condition: 'gt', params: [2] }).code, 'REQUIRED_ERROR');
+assert.strictEqual(Validation.validate({ title: 'Name', type: 'text', condition: 'notBlank', currentValue: '  ' }).result, false);
+assert.strictEqual(Validation.validate({ title: 'Name', type: 'text', condition: 'notBlank', currentValue: 'Sam' }).result, true);
+
+// Validation.check surfaces configs that validate() would silently pass
+assert.deepStrictEqual(Validation.check({ title: 'n', type: 'number', condition: 'gte', params: [10] }), []);
+assert.strictEqual(Validation.check({ title: 'n', type: 'number', condition: 'gte', params: ['abc'] })[0].code, 'INVALID_NUMBER_PARAM');
+assert.strictEqual(Validation.check({ title: 'n', type: 'number', condition: 'between', params: [10] })[0].code, 'MISSING_PARAMS');
+assert.strictEqual(Validation.check({ title: 'n', type: 'number', condition: 'contains', params: ['x'] })[0].code, 'UNKNOWN_CONDITION');
+assert.strictEqual(Validation.check({ title: 'n', type: 'text', condition: 'matches', params: ['('] })[0].code, 'INVALID_PATTERN');
+assert.strictEqual(Validation.check({ title: 'd', type: 'date', condition: 'gt', params: ['not-a-date'] })[0].code, 'INVALID_DATE_PARAM');
+assert.strictEqual(Validation.check({ title: 'n', type: 'number', condition: ['gt', 'lt'], params: [[1]] })[0].code, 'PARAMS_NOT_ALIGNED');
+// cross-field references are resolved later, so they are not flagged here
+assert.deepStrictEqual(Validation.check({ title: 'n', type: 'number', condition: 'between', params: [25, '#3'] }), []);
+
+console.log('all code/config checks passed');
